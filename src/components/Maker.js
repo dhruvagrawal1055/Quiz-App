@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useNavigate} from "react-router-dom";
-
+// import '..//css/maker.css'
 const Maker = () => {
     const [save, setSave] = useState(false);
     const [warn, setWarn] = useState(false);
@@ -8,14 +8,14 @@ const Maker = () => {
     const [warn3, setWarn3] = useState(false);
     const navigate = useNavigate();
     const templateQues = [{
-        type: 'text', value: '',choices:[''],correctAnswer:''
+        type: 'text', value: '',choices:['','','',''],correctAnswer:''
     }]
     const [topic, setTopic] = useState(localStorage.getItem('Quiz_topic')===null?'':localStorage.getItem('Quiz_topic'));
     const [arrQues, setArrQues] = useState(localStorage.getItem('Question_data')===null?templateQues:JSON.parse(localStorage.getItem('Question_data')));
     const handleClickADD = () => {
         setArrQues(arr => {
             return [...arr, {
-                type: 'text', value: '', choices:['']
+                type: 'text', value: '', choices:['','','','']
             }]
         })
     }
@@ -66,7 +66,7 @@ const Maker = () => {
         const index = e.target.id;
         setArrQues((arr) => {
             const s = arr.slice();
-            s[index].value = e.target.value.trim();
+            s[index].value = e.target.value;
             return s
         })
     }
@@ -76,7 +76,7 @@ const Maker = () => {
         // console.log(arrQues[i].choices[j])
         setArrQues((arr)=>{
             const s=arr.slice();
-            s[i].choices[j]=e.target.value.trim();
+            s[i].choices[j]=e.target.value;
             return s
         })
     }
@@ -109,7 +109,7 @@ const Maker = () => {
         }
     }
     return (<div>
-            <div id='container' className="bg-yellow-300 flex flex-col" style={{pointerEvents: save?"none":"all"}}>
+            <div id='container'  style={{pointerEvents: save?"none":"all"}}>
                 <label htmlFor="topic">Topic : </label>
                 <input type="text" value={topic} onChange={(e)=>setTopic(e.target.value)}/>
                 {arrQues.map((input, i) => {
@@ -122,7 +122,7 @@ const Maker = () => {
                             id={i}
                             key={i}
                             onChange={handleChange}
-                            className="py-2 bg-gray-200 rounded-lg shadow-lg focus:outline-none focus:bg-sky-300"
+                            
                         />
                         {input.choices.map((choice, j) => {
                             return (
@@ -135,25 +135,11 @@ const Maker = () => {
                                         id={i.toString()+j.toString()}
                                         key={i.toString()+j.toString()}
                                         onChange={e=>handleChangeChoice(e,i,j)}
-                                        className='border border-black'
                                     />
                                 </React.Fragment>
                             )
                         })}
-                        <button
-                            key={'ADD-Choice'+i.toString()}
-                            className='p-2 bg-lime-300'
-                            onClick={()=>{
-                                handleClickChoiceADD(i)
-                                }
-                            }>+</button>
-                        <button
-                            key={'REMOVE-Choice'+i.toString()}
-                            className='p-2 bg-lime-300'
-                            onClick={()=>{
-                                handleClickChoiceREMOVE(i)
-                            }
-                            }>-</button>
+                        
                     </div>)
                 })}
             </div>
@@ -167,14 +153,13 @@ const Maker = () => {
             </button>
         <button
             type='submit'
-            onClick={() => handleSubmit()}
-            className="bg-blue-400"
+            onClick={() => handleSubmit()}  
             disabled={save}>Submit
         </button>
-        {warn && <div className="text-red-600 bg-blue-200 px-4 py-2 rounded">Options are empty or Correct Answer is not selected</div>}
-        {warn2 && <div className="text-red-600 bg-blue-200 px-4 py-2 rounded">Question(s) are empty</div>}
-        {warn3 && <div className="text-red-600 bg-blue-200 px-4 py-2 rounded">Topic is empty</div>}
-        {save && <div className="text-green-600 bg-amber-200 px-4 py-2 rounded">Saving data ...</div>}
+        {warn && <div >Options are empty or Correct Answer is not selected</div>}
+        {warn2 && <div >Question(s) are empty</div>}
+        {warn3 && <div >Topic is empty</div>}
+        {save && <div >Saving data ...</div>}
         </div>);
 };
 

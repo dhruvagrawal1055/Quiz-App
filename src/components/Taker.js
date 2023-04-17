@@ -40,10 +40,10 @@ const Taker = () => {
 
     }
     return (
-        <div>
-            Taker Page
+        <div className='takeDiv'>
+              <h1>Enter the Quiz code Provided</h1> 
             <input type="text" value={code} onChange={handleCode}/>
-            <button onClick={getQuiz}>Let's Goooo</button>
+            <button className='takeBtn' onClick={getQuiz}>Let's Goooo</button>
             {warn && <p>Wrong Code Entered</p>}
             {enable && <p>Entering Quiz: {enable}</p>}
         </div>

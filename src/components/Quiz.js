@@ -11,7 +11,10 @@ const Quiz = () => {
     const [flag, setFlag] = useState(false);
     const [disabled, setDisabled] = useState(false);
     const navigate = useNavigate();
+    const [showScore, setShowScore] = useState(false);
+    console.log(questions);
     useEffect(() => {
+        console.log(score);
         // console.log("index set");
 
         setDisabled(true)
@@ -23,43 +26,69 @@ const Quiz = () => {
         localStorage.setItem('attempted',false)
     }, []);
 
-    const handleNext = () => {
-        if(answer===questions[index].correctAnswer){
-            setScore(score+1)
+    const handleNext = (e) => {
+        setAnswer(e)
+        console.log(e,answer, questions[index].correctAnswer);
+        if (e === questions[index].correctAnswer) {
+            
+            setScore(score + 1)
+            console.log("sets score", score,index);
         }
         if(index<questions.length-1){
 
             setIndex(index+1)
         }
-        else{
+        else {
+            setShowScore(true);
             localStorage.setItem('score', score.toString()+'/'+questions.length.toString())
-
-            navigate('/Result')
+            
+            
         }
         setAnswer('')
     }
-    const handleAnswer=(e)=>{
-        // console.log(e)
-        setAnswer(e)
-        setDisabled(false)
-    }
-    const frame=(
-        <div className="bg-yellow-500">
-            {currentQuestion}
-            <ul >
-                {options.map(option => (<li
-                                            onClick={()=>{handleAnswer(option)}}
-                                            key={option}
-                                            className={(answer===option?"bg-white ":"") +"border border-black"}>{option}
-                                        </li>))}
-            </ul>
+    // const handleAnswer=(e)=>{
+    //     // console.log(e)
+    //     setAnswer(e)
+    //     setDisabled(false)
+    // }
+    const frame = (
+        <div className='app'>
+			{showScore ? (
+				<div className='score-section'>
+					You scored {score} out of {questions.length}
+				</div>
+			) : (
+				<>
+					<div className='question-section'>
+						<div className='question-count'>
+							<span>Question {index + 1}</span>/{questions.length}
+						</div>
+						<div className='question-text'>{questions[index].value}</div>
+					</div>
+					<div className='answer-section'>
+						{questions[index].choices.map((answerOption) => (
+							<button onClick={() => handleNext(answerOption)}>{answerOption}</button>
+						))}
+					</div>
+				</>
+			)}
+		</div>
+        // <div className="bg-yellow-500">
+        //     {currentQuestion}
+        //     <ul >
+        //         {options.map(option => (<li
+        //                                     onClick={()=>{handleAnswer(option)}}
+        //                                     key={option}
+        //                                     className={(answer===option?"bg-white ":"") +"border border-black"}>{option}
+        //                                 </li>))}
+        //     </ul>
 
-            {flag &&
-                <button onClick={() => {handleNext()}}
-                                        disabled={disabled}
-                                        className={answer?"bg-blue-200":"bg-green-500"} >{index===questions.length-1?'Submit':'Next'}
-                </button>}
-        </div>
+        //     {flag &&
+        //         <button onClick={() => {handleNext()}}
+        //                                 disabled={disabled}
+        //                                 className={answer?"bg-blue-200":"bg-green-500"} >{index===questions.length-1?'Submit':'Next'}
+        //         </button>}
+        // </div>
     )
     return (
         <>

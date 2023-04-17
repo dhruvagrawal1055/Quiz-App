@@ -3,8 +3,8 @@ import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom'
 import {collection, getDocs ,doc,deleteDoc} from 'firebase/firestore';
 import {db} from "../Firebase";
-import Cardgrid from '../component2/cardgrid';
-import Card from '../component2/card';
+import Cardgrid from '../css/cardgrid';
+import Card from '../css/card';
 // import Quiz from './Quiz';
 // import login from "./Login";
 
@@ -19,7 +19,7 @@ const Home = () => {
         const userDocs=docs.docs.map(doc=>{
             return{id:doc.id,data:doc.data()}
         });
-        console.log(userDocs)
+        // console.log(userDocs)
         if(userDocs.length===1){
             setNoData(true)
         }
@@ -101,35 +101,36 @@ const Home = () => {
             {/*{localStorage.getItem('loaded') === 'true'? <Quiz/>:null}*/}
             <Cardgrid>
                 <Card>
-                <h2>Card{"Get Quizzes that you made"}</h2>
+                <h2 className='Head'>{"Welcome to Quizzery"}</h2>
                 </Card>
             </Cardgrid>
-            <button onClick={getData} className="mx-auto w-fit text-lg py-2 bg-sky-200 px-4 py-2 rounded border-slate-700 border-2 hover:bg-slate-300 hover:scale-110">Get Quizzes that you made</button>
-            <button onClick={()=>maker()} className="mx-auto w-fit text-lg py-2 bg-sky-200 px-4 py-2 rounded border-slate-700 border-2 hover:bg-slate-300 hover:scale-110">Create Quiz</button>
-            <button onClick={()=>taker()} className="mx-auto w-fit text-lg py-2 bg-sky-200 px-4 py-2 rounded border-slate-700 border-2 hover:bg-slate-300 hover:scale-110">Taker Quiz</button>
+            <div className='btnDiv'>
+            <button className='homeBtn' onClick={getData} >Get Quizzes that you made</button>
+            <button className='homeBtn'onClick={()=>maker()} >Create Quiz</button>
+            <button className='homeBtn' onClick={()=>taker()} >Take Quiz</button>
             <button
-                onClick={()=>handleLogout()}
-                className="mx-auto w-fit text-lg py-2 bg-sky-200 px-4 py-2 rounded border-slate-700 border-2 hover:bg-red-300 hover:scale-110">
+                className='homeBtn'
+                onClick={()=>handleLogout()}>
                 Logout
-            </button>
-            {noData && <p className="px-4 py-2 bg-amber-300 rounded w-fit mx-auto">You have not made any quiz</p>}
+                </button>
+                </div>
+            {noData && <p >You have not made any quiz</p>}
             {data && data.map((item, index) => {
                 return (
                     <div 
-                        className="flex flex-col mx-auto w-full py-2 px-4 bg-gray-200 rounded border-slate-700 border-2 hover:bg-slate-300 sm:w-[600px]"
                         key={'div quiz'+index.toString()}>
-                        <span className="text-xl font-serif">QUIZ {index+1}</span>
+                        <span >QUIZ {index+1}</span>
                         <p  key={'head quiz'+index.toString()}></p>
-                        <hr className="border border-slate-500"/>
+                        <hr />
                         <p><b>Topic :</b> {item.id}</p>
-                        <span><b>Share Code :</b><span className="text-gray-500 font-light">( Click below to Copy! ) <span id={'msg'+index.toString()} className="text-red-600"></span></span></span>
-                        <span onClick={(e)=>copy2clip(e,index)} className="cursor-pointer whitespace-nowrap overflow-auto rounded py-1 px-2 border border-slate-700 bg-lime-400 hover:bg-lime-300">{localStorage.getItem('uid')+"//"+item.id}</span>
+                        <span><b>Share Code :</b><span >( Click below to Copy! ) <span id={'msg'+index.toString()} ></span></span></span>
+                        <span onClick={(e)=>copy2clip(e,index)} >{localStorage.getItem('uid')+"//"+item.id}</span>
 
                         <button
                             key={'button quiz'+index.toString()}
                             id={item.id}
-                            onClick={e=>deleteQuiz(e)}
-                            className="my-2 w-fit mx-auto text-lg py-2 bg-sky-200 px-3 py-1 rounded border-slate-700 border-2 hover:bg-emerald-200 hover:scale-110">Delete Quiz
+                            onClick={e => deleteQuiz(e)}>
+                            Delete Quiz
                         </button>
 
                     </div>
